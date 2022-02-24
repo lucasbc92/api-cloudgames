@@ -4,6 +4,9 @@ import org.senai.devinhouse.semana10.cloudgames.model.Usuario;
 import org.senai.devinhouse.semana10.cloudgames.parameter.UsuarioPostParameter;
 import org.senai.devinhouse.semana10.cloudgames.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,17 +24,23 @@ public class UsuarioController {
     private UsuarioRepository repository;
 
     @GetMapping
-    public List<Usuario> get(@RequestParam(required = false) String nome, @RequestParam(required = false) String email) {
+    public List<Usuario> get(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false, defaultValue = "1") Integer p
+    ) {
         if(nome == null && email == null){
-            List<Usuario> result = new ArrayList<>();
-
-            Iterable<Usuario> usuarioEntityIterable = repository.findAll();
-            Iterator<Usuario> iterator = usuarioEntityIterable.iterator();
-            while (iterator.hasNext()) {
-                result.add(iterator.next());
-            }
-
+            PageRequest pageRequest = PageRequest.of(p-1, 2, Sort.by("nome"));
+            Page<Usuario> resultPage = repository.findAll(pageRequest);
+            List<Usuario> result = resultPage.getContent();
             return result;
+//            List<Usuario> result = new ArrayList<>();
+//            Iterable<Usuario> usuarioEntityIterable = repository.findAll();
+//            Iterator<Usuario> iterator = usuarioEntityIterable.iterator();
+//            while (iterator.hasNext()) {
+//                result.add(iterator.next());
+//            }
+//            return result;
         } else if(nome == null && email != null){
             return repository.findByEmail(email);
         } else if(nome != null && email == null){
