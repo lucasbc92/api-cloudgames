@@ -1,0 +1,31 @@
+<configuration debug="false">
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{ISO8601} %highlight(%-5level) [%blue(%t)] %yellow(%C{5}): %msg%n%throwable</pattern>
+        </encoder>
+    </appender>
+    <appender name="controller" class="ch.qos.logback.core.FileAppender">
+        <file>controller.log</file>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{ISO8601} %-5level [%t] %C{5}: %msg%n%throwable</pattern>
+        </layout>
+    </appender>
+    <appender name="repository" class="ch.qos.logback.core.FileAppender">
+        <file>repository.log</file>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%d{ISO8601} %-5level [%t] %C{5}: %msg%n%throwable</pattern>
+        </layout>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="Console" />
+    </root>
+
+    <logger name="org.senai.devinhouse.semana10.cloudgames.api.v1" additivity="false" level="info">
+        <appender-ref ref="controller" />
+    </logger>
+
+    <logger name="org.senai.devinhouse.semana10.cloudgames.repository" additivity="false" level="debug">
+        <appender-ref ref="repository" />
+    </logger>
+</configuration>
