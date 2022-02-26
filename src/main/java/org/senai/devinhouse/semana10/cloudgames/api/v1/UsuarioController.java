@@ -1,5 +1,6 @@
 package org.senai.devinhouse.semana10.cloudgames.api.v1;
 
+import org.senai.devinhouse.semana10.cloudgames.model.Jogo;
 import org.senai.devinhouse.semana10.cloudgames.model.Usuario;
 import org.senai.devinhouse.semana10.cloudgames.parameter.UsuarioPostParameter;
 import org.senai.devinhouse.semana10.cloudgames.repository.UsuarioRepository;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -50,6 +52,15 @@ public class UsuarioController {
         }
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> getById(@PathVariable("id") Long id) {
+        Optional<Usuario> institution = this.repository.findById(id);
+
+        return institution.isPresent()
+                ? ResponseEntity.ok(institution.get())
+                : ResponseEntity.noContent().build();
+    }
+
 //    @GetMapping("/nome")
 //    public List<Usuario> getByNome(@RequestParam String nome) {
 //        return repository.findByNomeLike(nome);
@@ -66,7 +77,7 @@ public class UsuarioController {
 
         try {
             usuario = new Usuario(usuarioPostParameter);
-        } catch(Exception e) {
+        } catch(DateTimeParseException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -92,6 +103,7 @@ public class UsuarioController {
     public ResponseEntity<Void> put(@PathVariable Long id,
                                     @RequestBody UsuarioPostParameter usuarioPostParameter) {
         Usuario usuario;
+        usuarioPostParameter.setId(id);
 
         try {
             usuario = new Usuario(usuarioPostParameter);
@@ -103,9 +115,7 @@ public class UsuarioController {
         if (optionalUsuario.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (!id.equals(usuario.getId())) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         repository.save(usuario);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

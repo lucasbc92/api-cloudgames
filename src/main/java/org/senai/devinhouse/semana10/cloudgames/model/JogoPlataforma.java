@@ -1,5 +1,7 @@
 package org.senai.devinhouse.semana10.cloudgames.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -40,6 +42,7 @@ public class JogoPlataforma {
       this.id = id;
    }
 
+   @JsonIgnore
    public Jogo getJogo() {
       return jogo;
    }

@@ -1,6 +1,7 @@
 package org.senai.devinhouse.semana10.cloudgames.model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Plataforma {
@@ -11,6 +12,10 @@ public class Plataforma {
 
     @Column(nullable = false)
     private String nome;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "plataforma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JogoPlataforma> jogos;
+
 
     public Long getId() {
         return id;

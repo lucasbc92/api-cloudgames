@@ -1,0 +1,3 @@
+2022-02-25 19:42:24,190 INFO  [http-nio-8080-exec-1] o.s.d.s.c.a.v.PlataformaController: Cadastro efetuado com sucesso
+2022-02-25 19:42:24,191 WARN  [http-nio-8080-exec-1] o.s.d.s.c.a.v.PlataformaController: Warning
+2022-02-25 19:42:24,191 ERROR [http-nio-8080-exec-1] o.s.d.s.c.a.v.PlataformaController: Error

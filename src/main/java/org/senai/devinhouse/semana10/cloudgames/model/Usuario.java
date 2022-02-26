@@ -4,6 +4,8 @@ import org.senai.devinhouse.semana10.cloudgames.parameter.UsuarioPostParameter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class Usuario {
 
     }
 
-    public Usuario(UsuarioPostParameter parameter) throws Exception{
+    public Usuario(UsuarioPostParameter parameter) throws DateTimeParseException{
             this.id = parameter.getId();
             this.nome = parameter.getNome();
             this.email = parameter.getEmail();
@@ -55,12 +57,8 @@ public class Usuario {
             this.cpf = parameter.getCpf();
             this.rg = parameter.getRg();
             // a data vai vir no formato dd/mm/yyyy
-            String[] dataSplit = parameter.getDataNascimento().split("/");
-            LocalDate dataNascimento = LocalDate.of(
-                    Integer.parseInt(dataSplit[2]),
-                    Integer.parseInt(dataSplit[1]),
-                    Integer.parseInt(dataSplit[0])
-            );
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate dataNascimento = LocalDate.parse(parameter.getDataNascimento(), dateTimeFormatter);
             this.dataNascimento = dataNascimento;
     }
 
@@ -138,5 +136,20 @@ public class Usuario {
 
     public void setBiblioteca(List<Jogo> biblioteca) {
         this.biblioteca = biblioteca;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", senha='" + senha + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", cpf='" + cpf + '\'' +
+                ", rg='" + rg + '\'' +
+                ", biblioteca=" + biblioteca +
+                '}';
     }
 }

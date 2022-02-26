@@ -13,15 +13,15 @@ public class Jogo {
     @Column(nullable = false)
     private String nome;
 
-    @OneToOne(mappedBy = "jogo")
+    @OneToOne(mappedBy = "jogo", cascade = CascadeType.ALL)
     private Midia capa;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
     private Genero genero;
 
-    //@OneToMany(fetch = FetchType.LAZY, mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<JogoPlataforma> plataformas;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "jogo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<JogoPlataforma> plataformas;
 
     public Long getId() {
         return id;
@@ -40,6 +40,10 @@ public class Jogo {
     }
 
     public Midia getCapa() {
+        if(capa == null){
+            capa = new Midia();
+            capa.setJogo(this);
+        }
         return capa;
     }
 
@@ -55,11 +59,11 @@ public class Jogo {
         this.genero = genero;
     }
 
-//    public List<JogoPlataforma> getPlataformas() {
-//        return plataformas;
-//    }
-//
-//    public void setPlataformas(List<JogoPlataforma> plataformas) {
-//        this.plataformas = plataformas;
-//    }
+    public List<JogoPlataforma> getPlataformas() {
+        return plataformas;
+    }
+
+    public void setPlataformas(List<JogoPlataforma> plataformas) {
+        this.plataformas = plataformas;
+    }
 }
